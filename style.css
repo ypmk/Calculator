@@ -67,3 +67,37 @@ button:hover {
     transform: scale(1.1);
 }
 
+@media (max-width: 480px) {
+    .calculator {
+        width: 95%;
+        max-width: 300px;
+        padding: 15px;
+    }
+
+    .display {
+        height: 50px;
+        font-size: 1.8em;
+    }
+
+    button {
+        height: 55px;
+        font-size: 1.3em;
+    }
+}
+
+
+@media (max-width: 350px) {
+    .calculator {
+        max-width: 260px;
+    }
+
+    .display {
+        height: 45px;
+        font-size: 1.6em;
+    }
+
+    button {
+        height: 50px;
+        font-size: 1.2em;
+    }
+}
