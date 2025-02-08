@@ -94,6 +94,8 @@ button:hover {
     .display {
         height: 45px;
         font-size: 1.6em;
+        width: 95%;
+        padding-right: 10px;
     }
 
     button {
