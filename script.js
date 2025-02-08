@@ -31,13 +31,14 @@ document.querySelectorAll('.button').forEach(button => {
     });
 });
 
-
+// Функция добавления символов в дисплей
 function appendToDisplay(value) {
     fullExpression += value;
     saveToLocalStorage();
     updateDisplay();
 }
 
+// Функция обновления данных на дисплее
 function updateDisplay() {
     const maxLength = 18;
     display.innerText = fullExpression.length > maxLength
@@ -45,6 +46,7 @@ function updateDisplay() {
         : fullExpression;
 }
 
+// Функция вычисления выражения
 function calculate() {
     try {
         let result = evaluateExpression(fullExpression);
@@ -57,22 +59,26 @@ function calculate() {
     }
 }
 
+// Функция удаления последнего символа
 function deleteLast() {
     fullExpression = fullExpression.slice(0, -1);
     saveToLocalStorage();
     updateDisplay();
 }
 
+// Функция очистки дисплея
 function clearDisplay() {
     fullExpression = "";
     saveToLocalStorage();
     updateDisplay();
 }
 
+// Функция сохранения в LocalStorage
 function saveToLocalStorage() {
     localStorage.setItem('calculatorExpression', fullExpression);
 }
 
+// Загружаем сохраненное значение из LocalStorage при загрузке страницы
 window.onload = () => {
     const savedValue = localStorage.getItem('calculatorExpression');
     if (savedValue) {
@@ -81,9 +87,7 @@ window.onload = () => {
     }
 };
 
-/** 
- * 🔹 Функция вычисления выражения через стек (RPN)
- */
+// Функция вычисления выражения через стек (RPN)
 function evaluateExpression(expression) {
     const outputQueue = [];
     const operatorStack = [];
@@ -91,7 +95,12 @@ function evaluateExpression(expression) {
     const associativity = { "+": "L", "-": "L", "*": "L", "/": "L", "^": "R" };
 
     // Разбираем выражение на токены
-    const tokens = expression.match(/(\d+(\.\d+)?|\+|\-|\*|\/|\^|\(|\))/g);
+    // Обрабатываем минус перед числом как часть числа, если это первое число или после открывающейся скобки
+    const tokens = expression
+        .replace(/([^\d\-+*/()^])(-)/g, '$1 $2')  // Пробел перед минусом, если это не оператор
+        .replace(/(^|\()(-)/g, '$1 0$2')  // Обрабатываем минус, если это первое число или после скобки
+        .match(/(\d+(\.\d+)?|\+|\-|\*|\/|\^|\(|\))/g);  // Разбираем на токены
+
     if (!tokens) throw new Error("Некорректное выражение");
 
     for (const token of tokens) {
@@ -129,9 +138,7 @@ function evaluateExpression(expression) {
     return evaluateRPN(outputQueue);
 }
 
-/** 
- * 🔹 Вычисление выражения в обратной польской нотации (RPN)
- */
+// Вычисление выражения в обратной польской нотации (RPN)
 function evaluateRPN(queue) {
     const stack = [];
 
